@@ -30,6 +30,10 @@ body, html {
   color: white;
   text-decoration: none;
 }
+.nav-links li a.active {
+  font-weight: bold;
+  border-bottom: 2px solid white;
+}
 
 /* Mobile menu */
 .menu-icon {
@@ -94,8 +98,8 @@ body, html {
   to {opacity: 1; transform: translateY(0);}
 }
 
-/* Other sections */
-section {
+/* Page content for non-home pages */
+.page-content {
   padding: 100px 20px;
   margin-top: 60px;
 }
