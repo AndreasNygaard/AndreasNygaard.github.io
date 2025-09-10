@@ -28,10 +28,11 @@ app.post("/contact", async (req, res) => {
 
     // Send email
     await transporter.sendMail({
-      from: email,
+      from: process.env.EMAIL_USER,
       to: "Andreas@phys.au.dk",
+	replyTo: email,
       subject: `Contact Form: ${fullname}`,
-      text: message,
+      text: `Message from: ${email}\n\n${message}`,
     });
 
     res.json({ success: true });
