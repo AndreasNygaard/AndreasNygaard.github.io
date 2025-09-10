@@ -6,7 +6,7 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 // Allow only my GitHub Pages site to access
-app.use(cors()){
+app.use(cors({
   origin: "https://andreasnygaard.github.io",
   methods: ["POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
