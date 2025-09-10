@@ -140,7 +140,7 @@ form.addEventListener("submit", async (e) => {
   const data = { fullname, email, message };
 
   try {
-    const res = await fetch("https://personal-website-2jik.onrender.com", {
+    const res = await fetch("https://andreasnygaard-github-io.onrender.com", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
