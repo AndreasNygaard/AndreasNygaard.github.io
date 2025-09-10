@@ -5,7 +5,12 @@ import cors from "cors";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+// Allow only my GitHub Pages site to access
+app.use(cors({
+  origin: "https://andreasnygaard.github.io",
+  methods: ["POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+}));
 
 // POST endpoint for contact form
 app.post("/contact", async (req, res) => {
