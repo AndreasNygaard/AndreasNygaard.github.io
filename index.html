@@ -1,4 +1,4 @@
-<!DOCTYPE html>A
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -27,6 +27,28 @@
 
 <body>
 
+  <!-- Mobile top bar (only visible on small screens) -->
+<div class="mobile-menu-bar">
+  <button class="mobile-menu-btn" aria-label="Open Menu">
+    <ion-icon name="menu-outline"></ion-icon>
+  </button>
+</div>
+
+<!-- Mobile navbar overlay -->
+<nav class="mobile-nav-overlay">
+  <button class="mobile-nav-close-btn" aria-label="Close Menu">
+    <ion-icon name="close-outline"></ion-icon>
+  </button>
+  <ul class="mobile-nav-list">
+    <button class="navbar-link  active" data-nav-link data-target="home">Home</button>
+    <button class="navbar-link  active" data-nav-link data-target="about">About</button>
+    <button class="navbar-link  active" data-nav-link data-target="resume">Resumé</button>
+    <button class="navbar-link  active" data-nav-link data-target="publications">Publications</button>
+    <button class="navbar-link  active" data-nav-link data-target="resources">Resources</button>
+    <button class="navbar-link  active" data-nav-link data-target="contact">Contact</button>
+    <!-- more links -->
+  </ul>
+</nav>
   <!--
     - #MAIN
   -->
@@ -167,27 +189,27 @@
         <ul class="navbar-list">
 
           <li class="navbar-item">
-            <button class="navbar-link  active" data-nav-link>Home</button>
+            <button class="navbar-link  active" data-nav-link data-target="home">Home</button>
           </li>
 
 	  <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>About</button>
+            <button class="navbar-link" data-nav-link data-target="about">About</button>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Resume</button>
+            <button class="navbar-link" data-nav-link data-target="resume">Resumé</button>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Publications</button>
+            <button class="navbar-link" data-nav-link data-target="publications">Publications</button>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Resources</button>
+            <button class="navbar-link" data-nav-link data-target="resources">Resources</button>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Contact</button>
+            <button class="navbar-link" data-nav-link data-target="contact">Contact</button>
           </li>
 
         </ul>
@@ -202,7 +224,7 @@
         - #HOME
       -->
 
-      <article class="home  active" data-page="home">
+      <article id="home" class="home  active" data-page="home">
 
         <header>
           <h2 class="h2 article-title">Welcome!</h2>
@@ -312,8 +334,8 @@
 
           <ul class="testimonials-list has-scrollbar">
 
-            <li class="testimonials-item"
-		data-modal-time="10-09-2025"
+	    <li class="testimonials-item"
+		data-modal-time="2025-09-10"
 		data-modal-time-text="10 September, 2025">
               <div class="content-card" data-testimonials-item>
 
@@ -333,7 +355,7 @@
             </li>
 
 	    <li class="testimonials-item"
-		data-modal-time="15-12-2024"
+		data-modal-time="2024-12-15"
 		data-modal-time-text="15 December, 2024">
               <div class="content-card" data-testimonials-item>
 
@@ -358,7 +380,7 @@
             </li>
 
 	    <li class="testimonials-item"
-		data-modal-time="15-12-2024"
+		data-modal-time="2024-12-15"
 		data-modal-time-text="15 December, 2024">
               <div class="content-card" data-testimonials-item>
 
@@ -383,7 +405,7 @@
             </li>
 
 	    <li class="testimonials-item"
-		data-modal-time="15-12-2024"
+		data-modal-time="2024-12-15"
 		data-modal-time-text="15 December, 2024">
               <div class="content-card" data-testimonials-item>
 
@@ -431,14 +453,14 @@
                 <img src="./assets/images/CF-logo.png" alt="Carlsberg Foundation" style="border-radius: 15px;" width="80" data-modal-img>
               </figure>
 
-              <img src="./assets/images/news-icon.svg" alt="quote icon" style="width: 60px; height: 60px;">
+              <img src="./assets/images/news-icon.svg" alt="quote icon" style="object-fit: contain; width: 60px; height: 60px;">
             </div>
 
             <div class="modal-content">
 
               <h4 class="h3 modal-title" data-modal-title>Carlsberg Foundation</h4>
 
-              <time datetime="" data-modal-time>31 February 1949</time>
+              <time datetime="1949-02-31" data-modal-time class="modal-time">31 February 1949</time>
 
               <div data-modal-text>
                 <p>
@@ -516,7 +538,7 @@
 	- #ABOUT
       -->
 
-      <article class="about" data-page="about">
+      <article id="about" class="about" data-page="about">
 
         <header>
           <h2 class="h2 article-title">About</h2>
@@ -536,7 +558,7 @@
         - #RESUME
       -->
 
-      <article class="resume" data-page="resume">
+      <article id="resume" class="resume" data-page="resume">
 
         <header>
           <h2 class="h2 article-title">Resume</h2>
@@ -729,7 +751,7 @@
         - #PORTFOLIO
       -->
 
-      <article class="portfolio" data-page="portfolio">
+      <article id="publications" class="portfolio" data-page="portfolio">
 
         <header>
           <h2 class="h2 article-title">Portfolio</h2>
@@ -969,7 +991,7 @@
         - #BLOG
       -->
 
-      <article class="blog" data-page="blog">
+      <article id="resources" class="blog" data-page="blog">
 
         <header>
           <h2 class="h2 article-title">Blog</h2>
@@ -1161,7 +1183,7 @@
         - #CONTACT
       -->
 
-      <article class="contact" data-page="contact">
+      <article id="contact" class="contact" data-page="contact">
 
         <header>
           <h2 class="h2 article-title">Contact</h2>
