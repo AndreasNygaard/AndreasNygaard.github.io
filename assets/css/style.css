@@ -876,6 +876,23 @@ main {
 }
 
 
+.download-link {
+  display: inline;
+}
+.download-link {
+  color: var(--orange-yellow-crayola);  /* or any highlight color */
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.download-link:hover {
+  color: var(--light-gray-70);
+}
+.highlight-strong {
+  font-weight: 800;       /* extra bold */
+}
+
+
 /**
  * skills 
  */
@@ -913,7 +930,117 @@ main {
   border-radius: inherit;
 }
 
+/**
+ * citations 
+ */
 
+.citations {
+  margin-top: 25px;
+}
+
+.citations-title {
+  margin-bottom: 20px;
+}
+
+.citations-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.citations-item {
+  list-style: none;
+}
+
+/*.content-card {
+  position: relative;
+  background: var(--border-gradient-onyx);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-2);
+  min-width: 280px;
+  max-width: 400px;
+}
+
+.content-card::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+}*/
+
+.citations-avatar-box {
+  margin-bottom: 10px;
+}
+
+.citations-item-title {
+  margin-bottom: 10px;
+  color: var(--white-2);
+}
+
+.metrics-summary {
+  display: flex;           /* layout metrics horizontally */
+  gap: 30px;               /* space between each metric */
+  white-space: nowrap;     /* prevent wrapping */
+}
+
+.metrics-summary .metric {
+  display: flex;
+  flex-direction: column;  /* stack label on top of value */
+  align-items: center;     /* center text horizontally */
+}
+
+.metrics-summary .label {
+  font-size: 14px;
+  color: var(--light-gray-70);
+}
+
+.metrics-summary .value {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--white-2);
+}
+
+/* Container holding the two metric cards */
+.citations-list {
+  display: flex;
+  flex-direction: row;       /* cards side by side by default */
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;           /* wrap cards if viewport too small */
+}
+
+/* Each content-card inside citations-list */
+.citations-metrics {
+  display: flex;
+  flex-direction: column;    /* labels/values stacked inside each card */
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+/* Metrics summary inside each card */
+.metrics-summary {
+  display: flex;
+  flex-direction: row;       /* spans arranged horizontally */
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Each metric (label + value) */
+.metrics-summary .metric {
+  display: flex;
+  flex-direction: column;    /* stack label above value */
+  align-items: center;
+}
+
+.citations-view-cards {
+  display: flex;
+  flex-direction: column;
+}
 
 
 
@@ -1633,6 +1760,16 @@ textarea.form-input::-webkit-resizer { display: none; }
   }
 }
  
+@media (max-width: 767px) {
+  .metrics-summary {
+    flex-direction: column;
+    align-items: center; /* left align items */
+  }
+  .citations-view-cards {
+    flex-direction: row; /* stack labels/values vertically */
+    align-items: center; /* center align items */
+  }
+}
 
 @media (min-width: 768px) {
 
@@ -1650,17 +1787,6 @@ textarea.form-input::-webkit-resizer { display: none; }
   }*/
 
   .has-scrollbar::-webkit-scrollbar-button { width: 100px; }
-
-
-
-  /**
-   * SIDEBAR
-   */
-
-  .contacts-list {
-    grid-template-columns: 1fr 1fr;
-    gap: 30px 15px;
-  }
 
 
 
@@ -1803,6 +1929,15 @@ textarea.form-input::-webkit-resizer { display: none; }
     margin: 0 auto;
     box-sizing: border-box;
     position: relative;
+  }
+
+  /**
+   * SIDEBAR
+   */
+
+  .contacts-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 15px;
   }
 
 

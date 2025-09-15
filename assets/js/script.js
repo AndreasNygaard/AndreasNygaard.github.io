@@ -124,9 +124,11 @@ const filterFunc = function (selectedValue) {
 
   for (let i = 0; i < filterItems.length; i++) {
 
+    const categories = filterItems[i].dataset.category.toLowerCase().split(",");
+
     if (selectedValue === "all") {
       filterItems[i].classList.add("active");
-    } else if (selectedValue === filterItems[i].dataset.category) {
+    } else if (categories.includes(selectedValue)) {
       filterItems[i].classList.add("active");
     } else {
       filterItems[i].classList.remove("active");
@@ -155,6 +157,19 @@ for (let i = 0; i < filterBtn.length; i++) {
 
 }
 
+/*let serverPinged = false;
+
+// Add event listener to all form inputs
+for (let i = 0; i < formInputs.length; i++) {
+  formInputs[i].addEventListener("input", () => {
+    if (!serverPinged) {
+      serverPinged = true;
+      fetch("https://andreasnygaard-github-io.onrender.com/ping")
+        .then(() => console.log("🔔 Backend warming up..."))
+        .catch(() => console.log("⚠️ Warmup failed (ignored)"));
+    }
+  });
+}*/
 
 const form = document.querySelector("[data-form]");
 const formBtn = document.querySelector("[data-form-btn]");
@@ -200,54 +215,6 @@ form.addEventListener("submit", async (e) => {
 });
 
 
-/*
-// page navigation variables
-const navigationLinks = document.querySelectorAll("[data-nav-link]");
-const pages = document.querySelectorAll("[data-page]");
-
-// add event to all nav link
-for (let i = 0; i < navigationLinks.length; i++) {
-  navigationLinks[i].addEventListener("click", function () {
-
-    for (let i = 0; i < pages.length; i++) {
-      if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
-        pages[i].classList.add("active");
-        navigationLinks[i].classList.add("active");
-        window.scrollTo(0, 0);
-      } else {
-        pages[i].classList.remove("active");
-        navigationLinks[i].classList.remove("active");
-      }
-    }
-
-  });
-}
-*/
-
-
-/*const navLinks = document.querySelectorAll("[data-nav-link]");
-const articles = document.querySelectorAll("article");
-
-navLinks.forEach((link) => {
-  link.addEventListener("click", () => {
-    const targetId = link.dataset.target;
-    const targetArticle = document.getElementById(targetId);
-
-    // remove "active" from all
-    navLinks.forEach(l => l.classList.remove("active"));
-    articles.forEach(a => a.classList.remove("active"));
-
-    // add "active" to clicked link(s) and matching article
-    document.querySelectorAll(`[data-target="${targetId}"]`)
-            .forEach(l => l.classList.add("active"));
-
-    if (targetArticle) {
-      targetArticle.classList.add("active");
-    }
-  });
-});
-*/
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll("[data-nav-link]");
@@ -259,9 +226,6 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", () => {
       const targetId = link.dataset.target;
       const targetArticle = document.getElementById(targetId);
-
-      // debug (uncomment if you need to inspect)
-      // console.log("nav click", targetId, !!targetArticle);
 
       // 1) remove "active" from all links and articles
       navLinks.forEach(l => l.classList.remove("active"));
@@ -282,6 +246,120 @@ document.addEventListener("DOMContentLoaded", () => {
       if (mobileNavOverlay && mobileNavOverlay.classList.contains("active")) {
         mobileNavOverlay.classList.remove("active");
       }
+
+      // 5) save to localStorage
+      // Reset scroll to top **after activating the article**
+      window.scrollTo({ top: 0, behavior: "instant" });
     });
   });
+
+  // On page load, restore last active article in **current session only**
+  window.addEventListener("DOMContentLoaded", () => {
+    const savedId = sessionStorage.getItem("activeArticle");
+    if (savedId) {
+      const savedArticle = document.getElementById(savedId);
+      if (savedArticle) {
+	// deactivate all
+	navLinks.forEach(l => l.classList.remove("active"));
+        articles.forEach(a => a.classList.remove("active"));
+	  
+	// activate saved
+	savedArticle.classList.add("active");
+        document.querySelectorAll(`[data-target="${savedId}"]`)
+                .forEach(l => l.classList.add("active"));
+
+	// Reset scroll to top AFTER browser finishes restoring scroll
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, behavior: "instant" });
+	});
+      }
+    }
+  });
+
+  // Save current article **in sessionStorage**, not localStorage
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      const targetId = link.dataset.target;
+      sessionStorage.setItem("activeArticle", targetId);
+    });
+  });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = {
+    citable: {
+      totalPapers: "totalPapers",
+      totalCitations: "totalCitations",
+      citationsPerPaper: "citationsPerPaper",
+      hIndex: "hIndex",
+      selfCitation: "selfCitation"
+    },
+    published: {
+      totalPapers: "totalPapersPub",
+      totalCitations: "totalCitationsPub",
+      citationsPerPaper: "citationsPerPaperPub",
+      hIndex: "hIndexPub",
+      selfCitation: "selfCitationPub"
+    }
+  };
+
+  // Helper to compute metrics
+  function computeMetrics(papers) {
+    const totalPapers = papers.length;
+
+    // Use citation_count_without_self_citations for total citations excluding self-citations
+    const citationsArray = papers.map(p => p.citation_count ?? 0);
+    const totalCitations = citationsArray.reduce((a, b) => a + b, 0);
+    const citationsPerPaper = totalPapers ? (totalCitations / totalPapers).toFixed(2) : "N/A";
+
+    // h-index based on citations excluding self-citations
+    const sortedCitations = citationsArray.sort((a, b) => b - a);
+    let hIndex = 0;
+    for (let i = 0; i < sortedCitations.length; i++) {
+      if (sortedCitations[i] >= i + 1) hIndex = i + 1;
+      else break;
+    }
+
+    // self-citation rate
+    const totalCitationCount = papers.reduce((sum, p) => sum + (p.citation_count ?? 0), 0);
+    const totalSelfCitations = papers.reduce((sum, p) => sum + ((p.citation_count ?? 0) - (p.citation_count_without_self_citations ?? 0)), 0);
+    const selfCitationRate = totalCitationCount ? ((totalSelfCitations / totalCitationCount) * 100).toFixed(1) + "%" : "N/A";
+
+    return { totalPapers, totalCitations, citationsPerPaper, hIndex, selfCitationRate };
+  }
+
+  fetch('https://inspirehep.net/api/literature?q=author:"Nygaard, Andreas"&size=250')
+    .then(response => response.json())
+    .then(data => {
+      const papers = data.hits.hits.map(hit => hit.metadata);
+
+      if (!papers.length) throw new Error("No papers found");
+
+      // Filter non-published papers (example: must have DOI or be peer-reviewed)
+      const publishedPapers = papers.filter(p => p.dois?.length > 0 || (p.publication_info?.length && !p.publication_info.some(pi => pi.journal_title === "Preprint")));
+
+      // Citable papers = all papers
+      const citablePapers = papers;
+
+      // Compute metrics
+      const citableMetrics = computeMetrics(citablePapers);
+      const publishedMetrics = computeMetrics(publishedPapers);
+
+      // Update HTML
+      Object.keys(cards.citable).forEach(key => {
+        document.getElementById(cards.citable[key]).textContent = citableMetrics[key] ?? citableMetrics[key + "Rate"] ?? "N/A";
+      });
+
+      Object.keys(cards.published).forEach(key => {
+        document.getElementById(cards.published[key]).textContent = publishedMetrics[key] ?? publishedMetrics[key + "Rate"] ?? "N/A";
+      });
+    })
+    .catch(err => {
+      console.error("Failed to fetch or compute metrics:", err);
+      Object.values(cards.citable).concat(Object.values(cards.published)).forEach(id => {
+        document.getElementById(id).textContent = "Error";
+      });
+    });
 });
