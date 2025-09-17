@@ -32,7 +32,7 @@ app.post("/contact", async (req, res) => {
   try {
     const result = await mg.messages.create(process.env.MAILGUN_DOMAIN, {
       from: `Website Contact <mailgun@${process.env.MAILGUN_DOMAIN}>`,
-      to: "Andreas@phys.au.dk",
+      to: "Andreas5868@gmail.com",
       subject: `Contact Form: ${fullname}`,
       text: `Message from: ${email}\n\n${message}`,
       "h:Reply-To": email, // lets you reply directly
