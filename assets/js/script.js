@@ -157,22 +157,45 @@ for (let i = 0; i < filterBtn.length; i++) {
 
 }
 
-/*let serverPinged = false;
 
-// Add event listener to all form inputs
-for (let i = 0; i < formInputs.length; i++) {
-  formInputs[i].addEventListener("input", () => {
-    if (!serverPinged) {
-      serverPinged = true;
-      fetch("https://andreasnygaard-github-io.onrender.com/ping")
-        .then(() => console.log("🔔 Backend warming up..."))
-        .catch(() => console.log("⚠️ Warmup failed (ignored)"));
-    }
-  });
-}*/
+//const form = document.querySelector("[data-form]");
+//const formBtn = document.querySelector("[data-form-btn]");
 
 const form = document.querySelector("[data-form]");
+const formInputs = document.querySelectorAll("[data-form-input]");
 const formBtn = document.querySelector("[data-form-btn]");
+
+// Track if we've already pinged the server
+let serverWarmedUp = false;
+
+// Function to ping server
+const pingServer = async () => {
+  try {
+    await fetch("https://andreasnygaard-github-io.onrender.com/ping");
+    console.log("Server pinged successfully!");
+  } catch (err) {
+    console.warn("Server ping failed:", err);
+  }
+};
+
+// Enable/disable submit button and trigger ping on first input
+formInputs.forEach((input) => {
+  input.addEventListener("input", () => {
+    // Warm up server on first keystroke
+    if (!serverWarmedUp) {
+      serverWarmedUp = true;
+      pingServer();
+    }
+
+    // Enable/disable submit button based on validity
+    if (form.checkValidity()) {
+      formBtn.removeAttribute("disabled");
+    } else {
+      formBtn.setAttribute("disabled", "");
+    }
+  });
+});
+
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -363,3 +386,51 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 });
+
+
+
+const galleryItems = document.querySelectorAll('.gallery-item img');
+const modal = document.getElementById('galleryModal');
+const modalImage = document.getElementById('modalImage');
+const closeBtn = document.getElementById('modalClose');
+const prevBtn = document.getElementById('modalPrev');
+const nextBtn = document.getElementById('modalNext');
+
+let currentIndex = 0;
+
+// Open modal when image is clicked
+galleryItems.forEach((img, index) => {
+  img.addEventListener('click', () => {
+    currentIndex = index;
+    modalImage.src = img.src;
+    modal.classList.add('show');
+  });
+});
+
+// Close modal
+closeBtn.addEventListener('click', () => modal.classList.remove('show'));
+
+// Navigate prev/next
+prevBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+  modalImage.src = galleryItems[currentIndex].src;
+});
+
+nextBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % galleryItems.length;
+  modalImage.src = galleryItems[currentIndex].src;
+});
+
+// Close modal when clicking outside the image
+modal.addEventListener('click', e => {
+  if (e.target === modal) modal.classList.remove('show');
+});
+
+// Optional: navigate with arrow keys
+document.addEventListener('keydown', e => {
+  if (!modal.classList.contains('show')) return;
+  if (e.key === 'ArrowLeft') prevBtn.click();
+  if (e.key === 'ArrowRight') nextBtn.click();
+  if (e.key === 'Escape') closeBtn.click();
+});
+
