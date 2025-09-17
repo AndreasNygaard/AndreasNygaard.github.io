@@ -1,8 +1,7 @@
 // server.js
 import express from "express";
 import cors from "cors";
-import formData from "form-data";
-import Mailgun from "mailgun.js";
+import MailerSend from "@mailersend/mailersend";
 
 const app = express();
 app.use(express.json());
@@ -18,11 +17,9 @@ app.use(express.json());
 app.use(cors());
 
 
-// Setup Mailgun
-const mailgun = new Mailgun(formData);
-const mg = mailgun.client({
-  username: "api",
-  key: process.env.MAILGUN_API_KEY, // from Render env vars
+// Initialize MailerSend client
+const mailersend = new MailerSend({
+  apiKey: process.env.MAILERSEND_API_KEY,
 });
 
 // POST endpoint for contact form
@@ -30,18 +27,18 @@ app.post("/contact", async (req, res) => {
   const { fullname, email, message } = req.body;
 
   try {
-    const result = await mg.messages.create(process.env.MAILGUN_DOMAIN, {
-      from: `Website Contact <mailgun@${process.env.MAILGUN_DOMAIN}>`,
-      to: "Andreas5868@gmail.com",
+    const response = await mailersend.email.send({
+      from: "Andreas@phys.au.dk", // must be a verified sender in MailerSend
+      to: ["Andreas@phys.au.dk"],
       subject: `Contact Form: ${fullname}`,
       text: `Message from: ${email}\n\n${message}`,
-      "h:Reply-To": email, // lets you reply directly
+      reply_to: email,
     });
 
-    console.log("Mailgun response:", result);
+    console.log("MailerSend response:", response);
     res.json({ success: true });
   } catch (error) {
-    console.error("Mailgun error:", error);
+    console.error("MailerSend error:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
