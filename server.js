@@ -1,7 +1,8 @@
 // server.js
 import express from "express";
 import cors from "cors";
-import MailerSend from "mailersend";
+import { MailerSend } from 'mailersend';
+
 
 const app = express();
 app.use(express.json());
@@ -17,10 +18,10 @@ app.use(express.json());
 app.use(cors());
 
 
-// Initialize MailerSend client
-const mailersend = new MailerSend({
+const mailerSend = new MailerSend({
   apiKey: process.env.MAILERSEND_API_KEY,
 });
+
 
 // POST endpoint for contact form
 app.post("/contact", async (req, res) => {
