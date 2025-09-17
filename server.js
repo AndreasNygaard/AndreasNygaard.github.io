@@ -33,7 +33,7 @@ app.post("/contact", async (req, res) => {
       to: ["Andreas@phys.au.dk"],
       subject: `Contact Form: ${fullname}`,
       text: `Message from: ${email}\n\n${message}`,
-      reply_to: email,
+      //reply_to: email,
     });
 
     console.log("MailerSend response:", response);
