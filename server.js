@@ -29,32 +29,24 @@ app.post("/contact", async (req, res) => {
       text_body: `Message from: ${email}\n\n${message}`,
       reply_to: email,                        // Visitor’s email
     };
-    // Safe logging
-    console.log("Payload to SMTP2GO:", {
-      ...payload,
-      api_key: "***hidden***"
-    });
 
-    const response = await axios.post(
-      "https://api.smtp2go.com/v3/email/send",
-      payload,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (response.data.data.success_count > 0) {
-      res.json({ success: true });
-    } else {
-      console.error("SMTP2GO API response:", response.data);
-      res.status(500).json({ success: false, error: "Failed to send email" });
+    try {
+      const response = await axios.post(
+        "https://api.smtp2go.com/v3/email/send",
+        payload,
+        { headers: { "Content-Type": "application/json" } }
+      );
+    
+      console.log("SMTP2GO API response:", response.data);
+    
+      // Respond BEFORE any other code that might throw
+      return res.json({ success: true });
+    
+    } catch (error) {
+      console.error("SMTP2GO API error:", error.response?.data || error.message);
+      return res.status(500).json({ success: false, error: error.message });
     }
-  } catch (error) {
-    console.error("SMTP2GO API error:", error.response?.data || error.message);
-    res.status(500).json({ success: false, error: error.message });
-  }
+
 });
 
 // Start server
