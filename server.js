@@ -46,7 +46,7 @@ app.post("/contact", async (req, res) => {
       console.error("SMTP2GO API error:", error.response?.data || error.message);
       return res.status(500).json({ success: false, error: error.message });
     }
-
+  };
 });
 
 // Start server
