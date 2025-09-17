@@ -8,13 +8,15 @@ const app = express();
 app.use(express.json());
 
 // Allow only your GitHub Pages site
-app.use(
+/*app.use(
   cors({
     origin: "https://andreasnygaard.github.io",
     methods: ["POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   })
-);
+);*/
+app.use(cors());
+
 
 // Setup Mailgun
 const mailgun = new Mailgun(formData);
