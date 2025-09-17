@@ -1,45 +1,48 @@
 // server.js
 import express from "express";
 import cors from "cors";
-import { MailerSend } from 'mailersend';
-
+import axios from "axios";
 
 const app = express();
 app.use(express.json());
 
-// Allow only your GitHub Pages site
+// Allow GitHub Pages and localhost for testing
 /*app.use(
   cors({
-    origin: "https://andreasnygaard.github.io",
+    origin: ["https://andreasnygaard.github.io", "http://localhost:5500"],
     methods: ["POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   })
 );*/
 app.use(cors());
 
-
-const mailerSend = new MailerSend({
-  apiKey: process.env.MAILERSEND_API_KEY,
-});
-
-
 // POST endpoint for contact form
 app.post("/contact", async (req, res) => {
   const { fullname, email, message } = req.body;
 
   try {
-    const response = await mailerSend.email.send({
-      from: "andreas@phys.au.dk", // must be a verified sender in MailerSend
-      to: "andreas@phys.au.dk",
+    const payload = {
+      api_key: process.env.SMTP2GO_API_KEY,   // Your HTTP API key from SMTP2GO
+      to: ["Andreas@phys.au.dk"],             // Recipient
+      sender: process.env.SMTP2GO_SENDER,    // Verified sender email (your email)
       subject: `Contact Form: ${fullname}`,
-      text: `Message from: ${email}\n\n${message}`,
-      //reply_to: email,
-    });
+      text_body: `Message from: ${email}\n\n${message}`,
+      reply_to: email,                        // Visitor’s email
+    };
 
-    console.log("MailerSend response:", response);
-    res.json({ success: true });
+    const response = await axios.post(
+      "https://api.smtp2go.com/v3/email/send",
+      payload
+    );
+
+    if (response.data.data.success_count > 0) {
+      res.json({ success: true });
+    } else {
+      console.error("SMTP2GO API response:", response.data);
+      res.status(500).json({ success: false, error: "Failed to send email" });
+    }
   } catch (error) {
-    console.error("MailerSend error:", error);
+    console.error("SMTP2GO API error:", error.response?.data || error.message);
     res.status(500).json({ success: false, error: error.message });
   }
 });
