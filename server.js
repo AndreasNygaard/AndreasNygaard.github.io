@@ -20,33 +20,34 @@ app.use(cors());
 app.post("/contact", async (req, res) => {
   const { fullname, email, message } = req.body;
 
-  try {
-    const payload = {
-      api_key: process.env.SMTP2GO_API_KEY,   // Your HTTP API key from SMTP2GO
-      to: ["Andreas@phys.au.dk"],             // Recipient
-      sender: process.env.SMTP2GO_SENDER,    // Verified sender email (your email)
-      subject: `Contact Form: ${fullname}`,
-      text_body: `Message from: ${email}\n\n${message}`,
-      reply_to: email,                        // Visitor’s email
-    };
-
-    try {
-      const response = await axios.post(
-        "https://api.smtp2go.com/v3/email/send",
-        payload,
-        { headers: { "Content-Type": "application/json" } }
-      );
-    
-      console.log("SMTP2GO API response:", response.data);
-    
-      // Respond BEFORE any other code that might throw
-      return res.json({ success: true });
-    
-    } catch (error) {
-      console.error("SMTP2GO API error:", error.response?.data || error.message);
-      return res.status(500).json({ success: false, error: error.message });
-    }
+  const payload = {
+    api_key: process.env.SMTP2GO_API_KEY,   // Your HTTP API key from SMTP2GO
+    to: ["Andreas@phys.au.dk"],             // Recipient
+    sender: process.env.SMTP2GO_SENDER,    // Verified sender email (your email)
+    subject: `Contact Form: ${fullname}`,
+    text_body: `Message from: ${email}\n\n${message}`,
+    reply_to: email,                        // Visitor’s email
   };
+
+  try {
+    const response = await axios.post(
+      "https://api.smtp2go.com/v3/email/send",
+      payload,
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+    console.log("SMTP2GO API response:", response.data);
+
+    // Respond immediately to frontend to avoid "server error"
+    return res.json({ success: true });
+
+  } catch (error) {
+    console.error(
+      "SMTP2GO API error:",
+      error.response?.data || error.message
+    );
+    return res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 // Start server
