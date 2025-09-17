@@ -50,6 +50,12 @@ app.post("/contact", async (req, res) => {
   }
 });
 
+// Simple ping endpoint to warm up the server
+app.get("/ping", (req, res) => {
+  console.log("Ping received!");
+  res.json({ success: true });
+});
+
 // Start server
 app.listen(process.env.PORT || 3000, () =>
   console.log("Server running")
