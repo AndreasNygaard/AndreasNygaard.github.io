@@ -29,10 +29,20 @@ app.post("/contact", async (req, res) => {
       text_body: `Message from: ${email}\n\n${message}`,
       reply_to: email,                        // Visitor’s email
     };
+    // Safe logging
+    console.log("Payload to SMTP2GO:", {
+      ...payload,
+      api_key: "***hidden***"
+    });
 
     const response = await axios.post(
       "https://api.smtp2go.com/v3/email/send",
-      payload
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
 
     if (response.data.data.success_count > 0) {
