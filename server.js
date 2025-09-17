@@ -29,8 +29,8 @@ app.post("/contact", async (req, res) => {
 
   try {
     const response = await mailerSend.email.send({
-      from: "Andreas@phys.au.dk", // must be a verified sender in MailerSend
-      to: ["Andreas@phys.au.dk"],
+      from: "andreas@phys.au.dk", // must be a verified sender in MailerSend
+      to: "andreas@phys.au.dk",
       subject: `Contact Form: ${fullname}`,
       text: `Message from: ${email}\n\n${message}`,
       //reply_to: email,
