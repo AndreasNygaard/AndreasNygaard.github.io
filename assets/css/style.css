@@ -1474,6 +1474,98 @@ main {
 }
 
 
+/* Download Modal Specific Styles */
+.download-modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  z-index: 1000;
+}
+
+.download-modal-content {
+  background-color: var(--eerie-black-2);
+  margin: 50px auto;
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.download-modal-close-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--orange-yellow-crayola);
+  margin-bottom: 10px;
+}
+
+.download-modal-section-title {
+  font-size: 20px;
+  margin: 20px 0 10px;
+  color: var(--orange-yellow-crayola);
+}
+
+.download-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.download-modal-file-item {
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  text-decoration: none;
+  color: #fff
+}
+
+.download-modal-file-item:hover {
+  background-color: #404040;
+}
+
+.download-modal-file-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  margin-bottom: 5px;
+  color: var(--orange-yellow-crayola);
+}
+
+.download-modal-file-name {
+  font-size: 14px;
+  word-break: break-word;
+}
+
+/* Large link container (acts like a button) */
+.download-modal-open-link {
+  display: block;
+  padding: 20px;
+  background-color: #007BFF;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.download-modal-open-link:hover {
+  background-color: #0056b3;
+}
+
+
 
 /*-----------------------------------*\
   #CONTACT
@@ -1578,6 +1670,105 @@ textarea.form-input::-webkit-resizer { display: none; }
 
 .form-btn:disabled:hover::before { background: var(--bg-gradient-jet); }
 
+/* === Modal Overlay === */
+.send-modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.send-modal-content {
+  background-color: #222;
+  padding: 30px 40px;
+  border-radius: 12px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  transition: all 0.3s ease;
+}
+
+/* === Icon Wrapper to reserve space === */
+#sendModalIcon {
+  height: 60px; /* fixes modal size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+/* === Spinner === */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #555;
+  border-top: 4px solid var(--orange-yellow-crayola);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Keep the spinner centered */
+#sendModalIcon .spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Spinner rotation animation */
+@keyframes spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* === Success & Error icons === */
+.icon {
+  font-size: 48px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.icon.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* === Text under the icon === */
+#sendModalText {
+  font-size: 16px;
+  color: var(--orange-yellow-crayola);
+  margin-top: 5px;
+}
+
+/* Success (green) and error (red) colors */
+.success-icon {
+  color: #28a745; /* Bootstrap green */
+}
+
+.error-icon {
+  color: #e74c3c; /* Nice red */
+}
+
+/* Class to hide the modal */
+.send-hidden {
+  display: none !important;
+}
+
+/* When not hidden, modal should use flex */
+.send-modal {
+  display: flex; 
+}
 
 
 

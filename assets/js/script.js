@@ -196,6 +196,44 @@ formInputs.forEach((input) => {
   });
 });
 
+const sendingModal = document.getElementById("sendingModal");
+const modalSpinner = document.getElementById("modalSpinner");
+const modalCheck = document.getElementById("modalCheck");
+const modalError = document.getElementById("modalError");
+const sendModalIcon = document.getElementById("sendModalIcon");
+const sendModalText = document.getElementById("sendModalText");
+
+function showModal() {
+  modalSpinner.style.opacity = "1";
+  modalCheck.classList.remove("visible");
+  modalError.classList.remove("visible");
+  modalCheck.classList.add("send-hidden");
+  modalError.classList.add("send-hidden");
+  sendModalText.textContent = "Sending message...";
+  sendingModal.classList.remove("send-hidden");
+}
+
+function updateModal(status) {
+  modalSpinner.style.opacity = "0";
+
+  setTimeout(() => {
+    if (status === "success") {
+      modalCheck.classList.remove("send-hidden");
+      setTimeout(() => modalCheck.classList.add("visible"), 50);
+      sendModalText.textContent = "Message sent!";
+    } else {
+      modalError.classList.remove("send-hidden");
+      setTimeout(() => modalError.classList.add("visible"), 50);
+      sendModalText.textContent = "Failed to send.";
+    }
+  }, 300);
+
+  setTimeout(() => {
+    sendingModal.classList.add("send-hidden");
+    modalCheck.classList.remove("visible");
+    modalError.classList.remove("visible");
+  }, 2000);
+}
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -204,36 +242,40 @@ form.addEventListener("submit", async (e) => {
   const email = form.email.value.trim();
   const message = form.message.value.trim();
 
-  // Simple validation
   if (!fullname || !email || !message) {
-    alert("⚠️ Please fill out all fields before sending!");
+    showModal();
+    updateModal("error");
+    sendModalText.textContent = "⚠️ Please fill all fields.";
     return;
   }
 
-  // Simple email validation
   const validEmail = /\S+@\S+\.\S+/.test(email);
   if (!validEmail) {
-    alert("⚠️ Please enter a valid email address!");
+    showModal();
+    updateModal("error");
+    sendModalText.textContent = "⚠️ Invalid email.";
     return;
   }
 
   const data = { fullname, email, message };
 
   try {
+    showModal();
+
     const res = await fetch("https://andreasnygaard-github-io.onrender.com/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
-    });	
+    });
 
     if (res.ok) {
-      alert("✅ Message sent successfully!");
       form.reset();
+      updateModal("success");
     } else {
-      alert("❌ Failed to send message.");
+      updateModal("error");
     }
   } catch (err) {
-    alert("⚠️ Error: " + err.message);
+    updateModal("error");
   }
 });
 
@@ -434,3 +476,28 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeBtn.click();
 });
 
+
+// Download Modal Script
+document.addEventListener('DOMContentLoaded', () => {
+  const downloadModal = document.getElementById('downloadModal');
+  const downloadModalOpenLink = document.querySelector('.download-modal-open-link');
+  const downloadModalCloseBtn = document.getElementById('downloadModalCloseBtn');
+
+  // Open modal
+  downloadModalOpenLink.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent <a> navigation
+    downloadModal.style.display = 'block';
+  });
+
+  // Close modal with close button
+  downloadModalCloseBtn.addEventListener('click', () => {
+    downloadModal.style.display = 'none';
+  });
+
+  // Close modal when clicking outside content
+  window.addEventListener('click', (e) => {
+    if (e.target === downloadModal) {
+      downloadModal.style.display = 'none';
+    }
+  });
+});

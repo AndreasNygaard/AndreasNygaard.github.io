@@ -1562,7 +1562,7 @@
             </li>
 
             <li class="blog-post-item">
-              <a href="#">
+              <a href="#" class="download-modal-open-link">
 
                 <figure class="blog-banner-box">
                   <img src="./assets/images/notebooks.png" alt="Jupyter notebooks" loading="lazy">
@@ -1655,7 +1655,86 @@
 
   </main>
 
+  <!-- Download Modal -->
+  <div class="download-modal" id="downloadModal">
+    <div class="download-modal-content">
+      <button class="download-modal-close-btn" id="downloadModalCloseBtn">
+	<ion-icon name="close-outline"></ion-icon>
+      </button>
+  
+      <!-- Section 1 -->
+      <div class="download-modal-section">
+        <div class="download-modal-section-title">TensorFlow Notebooks</div>
+        <div class="download-modal-grid">
+          <a href="assets/images/band.jpg" download class="download-modal-file-item">
+            <div class="download-modal-file-icon">
+	      <ion-icon name="document-text"></ion-icon>
+	    </div>
+            <div class="download-modal-file-name">TensorFlow_basics.ipynb</div>
+          </a>
+          <a href="index.html" download class="download-modal-file-item">
+            <div class="download-modal-file-icon">
+	      <ion-icon name="document-text"></ion-icon>
+	    </div>
+            <div class="download-modal-file-name">MNIST_classification.ipynb</div>
+          </a>
+        </div>
+      </div>
+  
+      <!-- Section 2 -->
+      <div class="download-modal-section">
+        <div class="download-modal-section-title">Neural Networks Notebooks</div>
+        <div class="download-modal-grid">
+          <a href="assets/images/band.jpg" download class="download-modal-file-item">
+            <div class="download-modal-file-icon">
+	      <ion-icon name="document-text"></ion-icon>
+	    </div>
+            <div class="download-modal-file-name">emulate_observables.ipynb</div>
+          </a>
+          <a href="assets/images/Connect.png" download class="download-modal-file-item">
+            <div class="download-modal-file-icon">
+	      <ion-icon name="document-text"></ion-icon>
+	    </div>
+            <div class="download-modal-file-name">MCMC_with_emulator.ipynb</div>
+          </a>
+	  <a href="assets/images/Connect.png" download class="download-modal-file-item">
+            <div class="download-modal-file-icon">
+              <ion-icon name="document-text"></ion-icon>
+            </div>
+            <div class="download-modal-file-name">build_training_data.ipynb</div>
+          </a>
+        </div>
+      </div>
 
+      <!-- Section 3
+      <div class="download-modal-section">
+        <div class="download-modal-section-title">Images</div>
+        <div class="download-modal-grid">
+          <a href="assets/images/band.jpg" download class="download-modal-file-item">
+            <div class="download-modal-file-icon">🖼️</div>
+            <div class="download-modal-file-name">image1.png</div>
+          </a>
+          <a href="assets/images/Connect.png" download class="download-modal-file-item">
+            <div class="download-modal-file-icon">🖼️</div>
+            <div class="download-modal-file-name">image2.jpg</div>
+          </a>
+        </div>
+      </div-->
+
+    </div>
+  </div>
+
+  <!-- Sending Modal -->
+  <div id="sendingModal" class="send-modal send-hidden">
+    <div class="send-modal-content">
+      <div id="sendModalIcon">
+        <div id="modalSpinner" class="spinner"></div>
+        <ion-icon id="modalCheck" name="checkmark-circle" class="icon success-icon send-hidden"></ion-icon>
+        <ion-icon id="modalError" name="close-circle" class="icon error-icon send-hidden"></ion-icon>
+      </div>
+      <p id="sendModalText">Sending message...</p>
+    </div>
+  </div>
 
 
 
